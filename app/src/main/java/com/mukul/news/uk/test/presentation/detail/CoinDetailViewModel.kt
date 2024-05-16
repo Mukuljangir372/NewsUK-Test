@@ -27,7 +27,7 @@ class CoinDetailViewModel @Inject constructor(
     private fun loadCoin(id: String) {
         loadCoinJob?.cancel()
         loadCoinJob = viewModelScope.launch {
-            getCoinUsecase(id = id, force = false).collect { result ->
+            getCoinUsecase(id = id, force = true).collect { result ->
                 when (result) {
                     is Result.Loading -> {
                         _state.update { CoinDetailState.Loading }
