@@ -31,7 +31,7 @@ class CoinRepositoryImpl(
                     val sortedCoinsByName = if (sorted) sortCoinsByName(coins) else coins
 
                     coins.map { mapper.domainToLocal(it) }.let {
-                        local.insert(localCoins)
+                        local.insert(it)
                     }
 
                     Result.Success(sortedCoinsByName)
