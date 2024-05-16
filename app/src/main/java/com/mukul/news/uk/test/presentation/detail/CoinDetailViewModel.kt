@@ -2,15 +2,12 @@ package com.mukul.news.uk.test.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mukul.news.uk.test.domain.usecase.GetCoinUsecase
-import com.mukul.news.uk.test.domain.usecase.GetCoinsUsecase
 import com.mukul.news.uk.test.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
