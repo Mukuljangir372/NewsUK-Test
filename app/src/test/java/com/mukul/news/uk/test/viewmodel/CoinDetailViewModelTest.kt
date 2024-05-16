@@ -15,14 +15,14 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito
+import org.mockito.Mockito.mock
 
 class CoinDetailViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val getCoinUsecase: GetCoinUsecase = Mockito.mock(GetCoinUsecase::class.java)
+    private val getCoinUsecase: GetCoinUsecase = mock(GetCoinUsecase::class.java)
 
     private val sut = CoinDetailViewModel(
         getCoinUsecase = getCoinUsecase
@@ -32,7 +32,7 @@ class CoinDetailViewModelTest {
     @Test
     fun `given_loading_when_get_coin_then_returns_loading_state`() = runTest {
         val flow = flow<Result<Coin>> { emit(Result.Loading()) }
-        given(getCoinUsecase(id = coin.id, force = false)).willReturn(flow)
+        given(getCoinUsecase(id = coin.id, force = true)).willReturn(flow)
 
         sut.load(id = coin.id)
         advanceUntilIdle()
@@ -44,7 +44,7 @@ class CoinDetailViewModelTest {
     @Test
     fun `given_success_when_get_coin_then_returns_success_state`() = runTest {
         val flow = flow<Result<Coin>> { emit(Result.Success(coin)) }
-        given(getCoinUsecase(id = coin.id, force = false)).willReturn(flow)
+        given(getCoinUsecase(id = coin.id, force = true)).willReturn(flow)
 
         sut.load(id = coin.id)
         advanceUntilIdle()
@@ -57,7 +57,7 @@ class CoinDetailViewModelTest {
     fun `given_failure_when_get_coin_then_returns_failure_state`() = runTest {
         val error = Result.Error<Coin>(UiMessage.StringType("Error"))
         val flow = flow<Result<Coin>> { emit(error) }
-        given(getCoinUsecase(id = coin.id, force = false)).willReturn(flow)
+        given(getCoinUsecase(id = coin.id, force = true)).willReturn(flow)
 
         sut.load(id = coin.id)
         advanceUntilIdle()
