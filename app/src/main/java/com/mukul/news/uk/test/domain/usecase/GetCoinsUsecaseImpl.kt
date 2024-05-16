@@ -13,7 +13,7 @@ class GetCoinsUsecaseImpl @Inject constructor(
     override suspend fun invoke(force: Boolean): Flow<Result<List<Coin>>> {
         return flow {
             emit(Result.Loading())
-            emit(repository.getCoins(force = force, sorted = false))
+            emit(repository.getCoins(force = force, sorted = true))
         }
     }
 }
