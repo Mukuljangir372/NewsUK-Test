@@ -1,0 +1,50 @@
+package com.mukul.news.uk.test.presentation.list
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mukul.news.uk.test.domain.usecase.GetCoinsUsecase
+import com.mukul.news.uk.test.utils.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CoinListViewModel @Inject constructor(
+    private val getCoinsUsecase: GetCoinsUsecase
+) : ViewModel() {
+    private val _state = MutableStateFlow<CoinListState>(CoinListState.Loading)
+    val state: StateFlow<CoinListState> = _state
+
+    fun load() {
+        loadCoins(force = false)
+    }
+
+    fun onRefreshCoins() {
+        loadCoins(force = true)
+    }
+
+    private fun loadCoins(force: Boolean) {
+        viewModelScope.launch {
+            getCoinsUsecase(force = force).collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        _state.update { CoinListState.Loading }
+                    }
+
+                    is Result.Success -> {
+                        _state.update { CoinListState.Success(result.data) }
+                    }
+
+                    is Result.Error -> {
+                        _state.update { CoinListState.Error(result.message) }
+                    }
+                }
+            }
+        }
+    }
+}
