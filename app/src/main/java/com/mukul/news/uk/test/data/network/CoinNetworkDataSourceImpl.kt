@@ -12,7 +12,7 @@ class CoinNetworkDataSourceImpl(
 ) : CoinNetworkDataSource {
     override suspend fun getCoins(): Result<List<CoinNetworkModel>> {
         return try {
-            val response = api.getCoins()
+            val response = api.getCoins().take(COINS_LIMIT)
             Result.Success(data = response)
         } catch (e: HttpException) {
             Result.Error(message = UiMessage.ResourceType(R.string.network_error))
@@ -30,5 +30,10 @@ class CoinNetworkDataSourceImpl(
         } catch (e: IOException) {
             Result.Error(message = UiMessage.ResourceType(R.string.internet_error))
         }
+    }
+
+    companion object {
+        // NOTE: API limit is 1000 requests per day and returns lots of coins at once
+        private const val COINS_LIMIT = 60
     }
 }
