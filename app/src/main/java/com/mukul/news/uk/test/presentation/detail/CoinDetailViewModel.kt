@@ -7,6 +7,7 @@ import com.mukul.news.uk.test.domain.usecase.GetCoinUsecase
 import com.mukul.news.uk.test.domain.usecase.GetCoinsUsecase
 import com.mukul.news.uk.test.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,8 +26,10 @@ class CoinDetailViewModel @Inject constructor(
         loadCoin(id = id)
     }
 
+    private var loadCoinJob: Job? = null
     private fun loadCoin(id: String) {
-        viewModelScope.launch {
+        loadCoinJob?.cancel()
+        loadCoinJob = viewModelScope.launch {
             getCoinUsecase(id = id, force = false).collect { result ->
                 when (result) {
                     is Result.Loading -> {
