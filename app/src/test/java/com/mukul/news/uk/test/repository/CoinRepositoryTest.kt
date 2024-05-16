@@ -149,7 +149,7 @@ class CoinRepositoryTest {
             name = "Bitcoin",
             symbol = "Btc",
             logo = "https://www.bitcoin.com",
-            tags = listOf(),
+            tags = arrayListOf(),
             description = "Bitcoin Internet"
         )
 
@@ -158,7 +158,7 @@ class CoinRepositoryTest {
             name = "Aitcoin",
             symbol = "Atc",
             logo = "https://www.aitcoin.com",
-            tags = listOf(),
+            tags = arrayListOf(),
             description = "Aitcoin Internet"
         )
 
